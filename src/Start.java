@@ -139,7 +139,7 @@ public class Start {
 
 		private void makeServerCommand() {
 			commands = new String[1];
-			commands[0] = "cd $HOME/Desktop/server; javac *.java; java MyServer";
+			commands[0] = "cd $HOME/Desktop/Server2; javac *.java; java MyServer";
 			String args = commands[0];
 			args += " ";
 			args += props.get("srvPort");
@@ -147,6 +147,8 @@ public class Start {
 			args += props.get("rdCount");
 			args += " ";
 			args += props.get("wrCount");
+			args += " ";
+			args += props.get("rmiPort");
 			commands[0] = args;
 		}
 
@@ -176,7 +178,7 @@ public class Start {
 				password = props.get("rdPass" + i);
 				temp = props.get("srvIp");
 
-				String commands[] = { "cd $HOME/Desktop/client;pwd; javac *.java;java MyClient" };
+				String commands[] = { "cd $HOME/Desktop/Client2;pwd; javac *.java;java MyClient" };
 
 				args = commands[0];
 				args += " ";
@@ -190,6 +192,8 @@ public class Start {
 				args += props.get("acCount");
 				args += " ";
 				args += "r";
+				args += " ";
+				args += props.get("rmiPort");
 				commands[0] = args;
 
 				createReader(user, host, password, commands);
@@ -232,7 +236,7 @@ public class Start {
 				temp = props.get("srvIp");
 				// append args
 
-				String commands[] = { "cd $HOME/Desktop/client; pwd; javac *.java;java MyClient" };
+				String commands[] = { "cd $HOME/Desktop/Client2; pwd; javac *.java;java MyClient"};
 				args = commands[0];
 				args += " ";
 				args += temp.substring(temp.indexOf("@") + 1);
@@ -244,6 +248,8 @@ public class Start {
 				args += props.get("acCount");
 				args += " ";
 				args += "w";
+				args += " ";
+				args += props.get("rmiPort");
 				commands[0] = args;
 
 				createWriter(user, host, password, commands);
@@ -340,7 +346,7 @@ public class Start {
 			mappingKeys.put("RW.writer", "wr");
 			mappingKeys.put("RW.password.reader", "rdPass");
 			mappingKeys.put("RW.password.writer", "wrPass");
-
+			mappingKeys.put("RW.rmiregistry.port", "rmiPort");
 			return mappingKeys;
 		}
 

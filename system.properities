@@ -1,0 +1,13 @@
+RW.server=magdy@localhost
+RW.server.password=123456
+RW.server.port=49052
+RW.numberOfReaders=2
+RW.reader0=magdy@localhost
+RW.password.reader0=123456
+RW.reader1=magdy@localhost
+RW.password.reader1=123456
+RW.numberOfWriters=1
+RW.writer0=magdy@localhost
+RW.password.writer0=123456
+RW.numberOfAccesses=3
+RW.rmiregistry.port=1099
