@@ -2,7 +2,6 @@
 
 import com.jcraft.jsch.*;
 import java.io.*;
-import java.nio.channels.FileChannel;
 import java.util.HashMap;
 
 public class Start {
@@ -29,8 +28,8 @@ public class Start {
 		srvUser = temp.substring(0, temp.indexOf("@"));
 		srvHost = temp.substring(temp.indexOf("@") + 1);
 		srvPass = props.get("srvPass");
-		System.out.println("server parameters " + srvUser + " " + srvHost + " "
-				+ srvPass);
+//		System.out.println("server parameters " + srvUser + " " + srvHost + " "
+//				+ srvPass);
 		ServerThread srvTh = new ServerThread(srvHost, srvUser, srvPass, props);
 		Thread myThread = new Thread(srvTh);
 		myThread.start();
@@ -42,7 +41,6 @@ public class Start {
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
@@ -54,7 +52,6 @@ public class Start {
 
 		readersThread.start();
 		writersThread.start();
-
 	}
 
 	private static void createClient(String user, String host, String password,
@@ -197,7 +194,6 @@ public class Start {
 				commands[0] = args;
 
 				createReader(user, host, password, commands);
-
 			}
 
 		}
@@ -301,7 +297,7 @@ public class Start {
 				String sCurrentLine;
 
 				while ((sCurrentLine = bf.readLine()) != null) {
-					System.out.println(sCurrentLine);
+//					System.out.println(sCurrentLine);
 					int splitIndex = sCurrentLine.indexOf('=');
 					String key = sCurrentLine.substring(0, splitIndex);
 					String value = sCurrentLine.substring(splitIndex + 1);

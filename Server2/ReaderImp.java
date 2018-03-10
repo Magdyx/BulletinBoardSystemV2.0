@@ -3,13 +3,12 @@ import java.rmi.RemoteException;
 
 public class ReaderImp implements IReader {
 
-	private String readerID;
-	private int seqNum;
-
 	@SuppressWarnings("finally")
 	@Override
-	public String run() throws RemoteException {
-		// TODO Auto-generated method stub
+	public String run(String readerID) throws RemoteException {
+		int seqNum = ++Server.seqNumber;
+		Server.numberOfReader++;
+
 		StringBuilder log = new StringBuilder();
 		StringBuilder temp = new StringBuilder();
 
@@ -33,7 +32,7 @@ public class ReaderImp implements IReader {
 			temp.append(Integer.toString(seqNum));
 			temp.append("\n");
 			temp.append(Integer.toString(rSeq));
-			System.out.println("run seq" + seqNum);
+			// System.out.println("run seq" + seqNum);
 			// out.println(new String(temp));
 
 			log.append(Integer.toString(rSeq));
@@ -54,9 +53,9 @@ public class ReaderImp implements IReader {
 				if (!Server.readerLog) {
 
 					Server.readerLog = true;
-					System.out.println(Server.readerLog);
+					// System.out.println(Server.readerLog);
 					Server.updateLogReader(new String(log));
-					System.out.println(Server.readerLog);
+					// System.out.println(Server.readerLog);
 					break;
 				} else {
 					try {
@@ -67,7 +66,6 @@ public class ReaderImp implements IReader {
 					}
 				}
 			}
-			System.out.println("Reader read return" + temp.toString());
 			return new String(temp);
 		}
 	}
@@ -76,16 +74,4 @@ public class ReaderImp implements IReader {
 	public String readData() throws RemoteException {
 		 return Server.news;
 	}
-
-	@Override
-	public void initialize(String clientID) throws RemoteException {
-		System.out.println("Initialize reader");
-		Server.seqNumber++;
-		Server.numberOfReader++;
-		this.readerID = clientID;
-		this.seqNum = Server.seqNumber;
-		System.out.println("Initialize reader done");
-
-	}
-
 }

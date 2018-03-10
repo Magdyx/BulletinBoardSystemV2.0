@@ -3,24 +3,20 @@ import java.rmi.RemoteException;
 
 
 public class WriterImp implements IWriter {
-	
-	private String writerID;
-	private String value;
-	private int seqNum;
 
 	@SuppressWarnings("finally")
 	@Override
-	public String run() throws RemoteException {
-		// TODO Auto-generated method stub
+	public String run(String writerID, String value) throws RemoteException {
+		int seqNum = ++Server.seqNumber;
+
 		StringBuilder log = new StringBuilder();
 		StringBuilder temp = new StringBuilder();
 
-
 		try {
-			
+
 			try {
-				
-				writeData(value);
+
+				writeData(value, value, writerID);
 				int rSeq = ++Server.rSeq;
 				log.append(Integer.toString(rSeq));
 				log.append("\t");
@@ -29,11 +25,11 @@ public class WriterImp implements IWriter {
 				log.append(writerID);
 				log.append("\n");
 
-				
+
 				temp.append(Integer.toString(seqNum));
 				temp.append("\n");
 				temp.append(Integer.toString(rSeq));
-				
+
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -56,15 +52,16 @@ public class WriterImp implements IWriter {
 					}
 				}
 			}
-			
-			return new String(temp); 
+
+			return new String(temp);
         }
 	}
 
 	@Override
-	public void writeData(String data) throws RemoteException {
+	public void writeData(String data, String value, String writerID
+	) throws RemoteException {
 		// TODO Auto-generated method stub
-		
+
 		while(true){
 			if (!Server.write){
 				Server.write = true;
@@ -89,20 +86,7 @@ public class WriterImp implements IWriter {
 				}
 			}
 		}
-		
-	}
 
-	@Override
-	public void initialize(String writerID, String value)
-			throws RemoteException {
-		// TODO Auto-generated method stub
-		Server.seqNumber++;
-		Server.numberOfWriter++;
-		this.writerID = writerID;
-		this.value = value;
-		this.seqNum = Server.seqNumber;
-		
 	}
-	
 
 }

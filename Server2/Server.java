@@ -44,7 +44,7 @@ public class Server implements IServer {
 		totalNumberOfReader = Integer.parseInt(args[1]);
 		totalNumberOfWriter = Integer.parseInt(args[2]);
 		rmiPort = Integer.parseInt(args[3]);
-		System.out.println("dfsd" + args[0] + args[1] + args[2] + " " + rmiPort);
+		// System.out.println("dfsd" + args[0] + args[1] + args[2] + " " + rmiPort);
 		/**
 		 * read news from file
 		 * */
@@ -55,34 +55,31 @@ public class Server implements IServer {
 		 * */
 
 		openLogsFile();
-		
+
 		try{
 			ReaderImp readerRemoteObj = new ReaderImp();
 			WriterImp writerRemoteObj = new WriterImp();
-			
+
 			LocateRegistry.createRegistry(rmiPort);
-			
+
 			IReader stubRd = (IReader) UnicastRemoteObject.exportObject(readerRemoteObj, portNumber);
 			IWriter stubWr = (IWriter) UnicastRemoteObject.exportObject(writerRemoteObj, portNumber);
-			
+
 			Registry reg = LocateRegistry.getRegistry(rmiPort);
-			
+
 			reg.rebind("IReader", stubRd);
 			reg.rebind("IWriter", stubWr);
-			
+
 			System.err.println("Server Ready");
-			
+
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		
-		
-		
 
 	}
 
 	public static void updateLogReader(String newData) {
-		System.out.println(newData);
+		System.out.println("new read data "  + newData);
 		try {
 		    Files.write(Paths.get("ServerReaderLog.txt"), newData.getBytes(), StandardOpenOption.APPEND);
 		}catch (IOException e) {
@@ -99,9 +96,7 @@ public class Server implements IServer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
-			System.out.println("before");
 			Server.writerLog = false;
-			System.out.println("done");
 		}
 	}
 
@@ -163,7 +158,6 @@ public class Server implements IServer {
 			fwWriterServer = new FileWriter(FILENAMEWRITER);
 			bwWriterServer = new BufferedWriter(fwWriterServer);
 			bwWriterServer.write("sSeq\toVal\twID\n");
-			System.out.println("samir");
 
 		} catch (IOException e) {
 			e.printStackTrace();

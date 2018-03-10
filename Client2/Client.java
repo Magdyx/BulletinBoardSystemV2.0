@@ -26,30 +26,34 @@ public class Client implements IClient {
 	private static BufferedWriter bwLogClient;
 	private FileWriter fwLogClient;
 	private int rmiPort;
+	private int doOpCnt = 0;
 
 	public void doOperation(Registry reg )  throws RemoteException, NotBoundException{
 
+		System.out.println("In do operation in client id " + clientID + " Count " + doOpCnt);
 		if (!readOrWriter){ // reader
 			IReader stubRd = (IReader) reg.lookup("IReader");
 
-			stubRd.initialize(clientID);
-			String temp = stubRd.run();
-			System.out.println("This is temp Reader" + temp);
+			System.out.println("In do operation stub rd called in client id " + clientID + " Count " + doOpCnt);
+			String temp = stubRd.run(clientID);
+			System.out.println("In do operation stub rd returned in client id " + clientID + " Count " + doOpCnt++);
+			// System.out.println("This is temp Reader" + temp);
 			String args[] = temp.split("\n");
 
 			String value  = args[0];
 			String seqNum = args[1];
 			String rSeq = args[2];
-			System.out.println("hehere" + value + "\nsamir " + seqNum + "\nrSeq " + rSeq);
+			// System.out.println("hehere" + value + "\nsamir " + seqNum + "\nrSeq " + rSeq);
 			writeLog(value  , rSeq ,  seqNum );
 
 		}else { // writer
 
 			IWriter stubRd = (IWriter) reg.lookup("IWriter");
 
-			stubRd.initialize(clientID, clientID);
-			String temp = stubRd.run();
-			System.out.println("This is temp Writer" + temp);
+			System.out.println("In do operation stub rd called in client id " + clientID + " Count " + doOpCnt);
+			String temp = stubRd.run(clientID, clientID);
+			System.out.println("In do operation stub rd returned in client id " + clientID + " Count " + doOpCnt++);
+			// System.out.printl	n("This is temp Writer" + temp);
 			String args[] = temp.split("\n");
 
 			String seqNum = args[0];
