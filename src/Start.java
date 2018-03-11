@@ -7,15 +7,7 @@ import java.util.HashMap;
 public class Start {
 
 	public static void main(String[] arg) {
-		/*
-		 * 1-read configuration file and fill hashMap with values 2-using
-		 * hashmap start server thread on local machine by change directory to
-		 * server folder on desktop, compiling and running using make file send
-		 * to server number of readers and number of writers 3-use ssh to log in
-		 * other hosts as specified in config file, change directory to client
-		 * folder on desktop, compile and run using make file
-		 */
-
+		
 		String srvHost, srvUser, srvPass;
 		int rdCount, wrCount;
 
@@ -24,12 +16,13 @@ public class Start {
 		HashMap<String, String> props = fh.readConfiguration();
 		printConfigFile(props);
 
+		// get server parameters: user, host, password
 		String temp = props.get("srvIp");
 		srvUser = temp.substring(0, temp.indexOf("@"));
 		srvHost = temp.substring(temp.indexOf("@") + 1);
 		srvPass = props.get("srvPass");
-//		System.out.println("server parameters " + srvUser + " " + srvHost + " "
-//				+ srvPass);
+
+		//create server
 		ServerThread srvTh = new ServerThread(srvHost, srvUser, srvPass, props);
 		Thread myThread = new Thread(srvTh);
 		myThread.start();
@@ -57,6 +50,7 @@ public class Start {
 	private static void createClient(String user, String host, String password,
 			String commands[]) {
 		Session session = null;
+		
 		try {
 			JSch jsch = new JSch();
 			session = jsch.getSession(user, host, 22);
@@ -131,7 +125,7 @@ public class Start {
 
 		public void run() {
 			makeServerCommand();
-			createFactory();
+			createServer();
 		}
 
 		private void makeServerCommand() {
@@ -149,7 +143,7 @@ public class Start {
 			commands[0] = args;
 		}
 
-		private void createFactory() {
+		private void createServer() {
 			createClient(user, host, password, commands);
 		}
 	}
@@ -175,12 +169,11 @@ public class Start {
 				password = props.get("rdPass" + i);
 				temp = props.get("srvIp");
 
-				String commands[] = { "cd $HOME/Desktop/Client2;pwd; javac *.java;java MyClient" };
+				String commands[] = { "cd $HOME/Desktop/Client2; javac *.java;java MyClient" };
 
 				args = commands[0];
 				args += " ";
-				args += temp.substring(temp.indexOf("@") + 1); // TODO fix
-																// reading srvIp
+				args += temp.substring(temp.indexOf("@") + 1); 
 				args += " ";
 				args += props.get("srvPort");
 				args += " ";
